@@ -32,8 +32,8 @@ st.markdown("""
     .main .block-container {
         padding: 0 !important;
         margin: 0 !important;
-        max-width: 100% !important;
-        width: 100% !important;
+        max-width: 100vw !important;
+        width: 100vw !important;
         height: 100vh !important;
     }
     
@@ -41,7 +41,7 @@ st.markdown("""
     .stApp > div {
         padding: 0 !important;
         margin: 0 !important;
-        width: 100% !important;
+        width: 100vw !important;
         height: 100% !important;
     }
     
@@ -52,6 +52,11 @@ st.markdown("""
         padding: 0 !important;
         width: 100vw !important;
         height: 100vh !important;
+        position: absolute !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
     }
     
     /* Override any remaining Streamlit styles */
@@ -91,6 +96,19 @@ st.markdown("""
         height: 100vh !important;
         padding: 0 !important;
         margin: 0 !important;
+    }
+    
+    /* Additional iframe overrides for scrolling */
+    .stApp iframe[data-testid="stIframe"] {
+        width: 100vw !important;
+        max-width: 100vw !important;
+        min-width: 100vw !important;
+    }
+    
+    /* Force all Streamlit containers to full width */
+    .stApp > div[data-testid="stVerticalBlock"] {
+        width: 100vw !important;
+        max-width: 100vw !important;
     }
 </style>
 """, unsafe_allow_html=True)
