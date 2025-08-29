@@ -32,9 +32,11 @@ streamlit run app.py
 - `FX.html` - Main dashboard HTML
 - `requirements.txt` - Python dependencies
 
-## Sharing
+## Sharing 
+
 
 
 The app is deployed on Streamlit Cloud and can be accessed by anyone worldwide with the provided link.
+
 
 
