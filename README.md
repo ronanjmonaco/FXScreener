@@ -34,5 +34,7 @@ streamlit run app.py
 
 ## Sharing
 
+
 The app is deployed on Streamlit Cloud and can be accessed by anyone worldwide with the provided link.
+
 
