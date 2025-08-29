@@ -28,7 +28,7 @@ try:
         html_content = f.read()
     
     # Display the HTML content
-    components.html(html_content, height=800, scrolling=True)
+    components.html(html_content, height=1200, scrolling=False)
     
 except FileNotFoundError:
     st.error("FX.html file not found. Please make sure the HTML file is in the same directory as this app.")
