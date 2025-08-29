@@ -59,7 +59,7 @@ try:
         html_content = f.read()
     
     # Display the HTML content with full height and no scrolling
-    components.html(html_content, height=1000, scrolling=False)
+    components.html(html_content, height=1500, scrolling=False)
     
 except FileNotFoundError:
     st.error("FX.html file not found. Please make sure the HTML file is in the same directory as this app.")
