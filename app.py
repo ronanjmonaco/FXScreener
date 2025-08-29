@@ -34,6 +34,7 @@ st.markdown("""
         margin: 0 !important;
         max-width: 100% !important;
         width: 100% !important;
+        height: 100vh !important;
     }
     
     /* Remove any remaining Streamlit spacing */
@@ -41,6 +42,7 @@ st.markdown("""
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
+        height: 100% !important;
     }
     
     /* Make iframe fill entire space */
@@ -48,22 +50,26 @@ st.markdown("""
         border: none !important;
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
     }
     
     /* Override any remaining Streamlit styles */
     .stApp > div:first-child {
         padding: 0 !important;
         margin: 0 !important;
+        height: 100vh !important;
     }
     
     /* Force full viewport */
     html, body {
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
-        height: 100% !important;
+        width: 100vw !important;
+        height: 100vh !important;
         overflow: hidden !important;
     }
     
@@ -71,13 +77,23 @@ st.markdown("""
     .stApp > .main > .block-container {
         padding: 0 !important;
         margin: 0 !important;
-        max-width: 100% !important;
+        max-width: 100vw !important;
+        width: 100vw !important;
+        height: 100vh !important;
     }
     
     /* Remove any remaining white spaces */
     .stApp > * {
         margin: 0 !important;
         padding: 0 !important;
+    }
+    
+    /* Force the main content to fill viewport */
+    .stApp .main {
+        width: 100vw !important;
+        height: 100vh !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -87,8 +103,8 @@ try:
     with open('FX.html', 'r', encoding='utf-8') as f:
         html_content = f.read()
     
-    # Display the HTML content with full height
-    components.html(html_content, height=1500, scrolling=False)
+    # Display the HTML content with full viewport
+    components.html(html_content, height=1000, scrolling=False)
     
 except FileNotFoundError:
     st.error("FX.html file not found. Please make sure the HTML file is in the same directory as this app.")
