@@ -9,7 +9,7 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# Custom CSS to hide Streamlit elements and force full width
+# Custom CSS to hide Streamlit elements and remove ALL white spaces
 st.markdown("""
 <style>
     /* Hide Streamlit UI elements */
@@ -23,8 +23,9 @@ st.markdown("""
         margin: 0 !important;
         padding: 0 !important;
         background: transparent !important;
-        width: 100% !important;
-        min-height: 100vh !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        overflow: hidden !important;
     }
     
     /* Force full width and remove all spacing */
@@ -33,6 +34,7 @@ st.markdown("""
         margin: 0 !important;
         max-width: 100% !important;
         width: 100% !important;
+        height: 100vh !important;
     }
     
     /* Remove any remaining Streamlit spacing */
@@ -40,6 +42,7 @@ st.markdown("""
         padding: 0 !important;
         margin: 0 !important;
         width: 100% !important;
+        height: 100% !important;
     }
     
     /* Make iframe fill entire space */
@@ -47,14 +50,50 @@ st.markdown("""
         border: none !important;
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+    }
+    
+    /* Override any remaining Streamlit styles */
+    .stApp > div:first-child {
+        padding: 0 !important;
+        margin: 0 !important;
+        height: 100vh !important;
     }
     
     /* Force full viewport */
     html, body {
         margin: 0 !important;
         padding: 0 !important;
-        width: 100% !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        overflow: hidden !important;
+    }
+    
+    /* Additional overrides for Streamlit's default spacing */
+    .stApp > .main > .block-container {
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: 100vw !important;
+        width: 100vw !important;
+        height: 100vh !important;
+    }
+    
+    /* Remove any remaining white spaces */
+    .stApp > * {
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+    
+    /* Force the main content to fill viewport */
+    .stApp .main {
+        width: 100vw !important;
+        height: 100vh !important;
+        padding: 0 !important;
+        margin: 0 !important;
     }
 </style>
 """, unsafe_allow_html=True)
