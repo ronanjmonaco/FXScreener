@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FX Screener - MEP & CCL</title>
+    <meta name="description" content="Landing de estilo fintech con cotizaciones FX (MEP y CCL) y canje." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <style>
+      :root{
+        --bg-start:#071a2b; --bg-mid:#0e3560; --bg-end:#2d6cdf;
+        --text:#ffffff; --text-dim:rgba(255,255,255,.72);
+        --card-bg:rgba(255,255,255,.06); --card-border:rgba(255,255,255,.18);
+        --header-bg:rgba(0,0,0,.28);
+        --mep-bg:rgba(46,196,182,.12); --ccl-bg:rgba(99,102,241,.14);
+        --row-alt:rgba(255,255,255,.03);
+        --accent-1:#1e5ad7; --accent-2:#27c3ff;
+        --decor: rgba(255,255,255,.12);
+      }
+      *{box-sizing:border-box}
+      html,body{height:100%}
+      body{
+        margin:0;
+        font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+        color:var(--text);
+        background:
+          radial-gradient(1200px 600px at 15% 10%, rgba(255,255,255,.06), transparent 60%),
+          radial-gradient(1000px 500px at 85% 0%, rgba(46,196,182,.12), transparent 55%),
+          linear-gradient(160deg,var(--bg-start) 0%,var(--bg-mid) 52%,var(--bg-end) 100%);
+      }
+      /* Allaria-inspired diagonal corner decorations */
+      body::before, body::after{
+        content:""; position:fixed; pointer-events:none; z-index:0; opacity:.25;
+        width:340px; height:340px;
+        background:
+          linear-gradient(135deg, transparent 0 72%, rgba(0,0,0,.22) 72% 100%),
+          repeating-linear-gradient(135deg, var(--decor) 0 10px, transparent 10px 24px);
+        filter: drop-shadow(0 12px 24px rgba(0,0,0,.4));
+      }
+      body::before{ left:-40px; bottom:-40px; transform:rotate(0.0001deg); }
+      body::after{ right:-40px; top:-40px; transform:rotate(180deg); }
+      .container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+      /* Header */
+      .site-header{
+        position:sticky;top:0;z-index:10;
+        backdrop-filter:saturate(140%) blur(8px);
+        background:var(--header-bg);
+        border-bottom:1px solid var(--card-border);
+      }
+      .site-header .container{
+        display:flex;align-items:center;justify-content:space-between;height:64px
+      }
+      .header-right{
+        display:flex;align-items:center;gap:20px
+      }
+      .status{
+        display:flex;align-items:center;gap:12px;color:var(--text-dim);font-size:12px
+      }
+      .brand{display:flex;align-items:center;gap:12px}
+      .logo{
+        width:36px;height:36px;display:grid;place-items:center;border-radius:10px;
+        background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
+        color:#001020;font-weight:800;font-size:14px;letter-spacing:.5px
+      }
+      .brand-title{margin:0;font-size:18px;font-weight:800}
+      .status{color:var(--text-dim);font-size:12px}
+      .banca-privada{
+        color:#ffffff;
+        font-size:12px;
+        font-weight:700;
+        background:rgba(255,255,255,.1);
+        border:1px solid rgba(255,255,255,.2);
+        padding:6px 12px;
+        border-radius:999px;
+        letter-spacing:.3px;
+      }
+      
+      /* Market Status */
+      .market-status{
+        display:flex;
+        align-items:center;
+        gap:6px;
+        background:rgba(255,255,255,.08);
+        border:1px solid rgba(255,255,255,.15);
+        border-radius:999px;
+        padding:6px 12px;
+        font-size:12px;
+        font-weight:600;
+        letter-spacing:.3px;
+      }
+      .status-indicator{
+        width:8px;
+        height:8px;
+        border-radius:50%;
+        background:#4ade80;
+        animation:pulse 2s infinite;
+      }
+      .status-indicator.closed{
+        background:#f87171;
+        animation:none;
+      }
+      .status-text{
+        color:var(--text-dim);
+        white-space:nowrap;
+      }
+      @keyframes pulse{
+        0%,100%{opacity:1}
+        50%{opacity:.5}
+      }
+
+      /* Hero/Intro */
+      .intro{padding:28px 0 14px}
+      .section-title{margin:0 0 6px 0;font-size:22px;font-weight:800;text-align:left}
+      .section-subtitle{margin:0;color:var(--text-dim);font-size:14px}
+
+      /* Card */
+      .card{
+        background:var(--card-bg);border:1px solid var(--card-border);
+        border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.35);
+        overflow:hidden;margin:16px 0 22px
+      }
+      .card-header{
+        padding:14px 16px;border-bottom:1px solid var(--card-border);
+        display:flex;align-items:center;justify-content:space-between;
+        background:linear-gradient(90deg, rgba(255,255,255,.06), transparent);
+      }
+      .card-header.center{
+        justify-content:center;
+      }
+      .card-title{margin:0;font-size:18px;font-weight:800;text-align:left}
+      .card-title.center{text-align:center}
+      .badges{display:flex;gap:8px}
+      .badge{padding:6px 10px;border-radius:999px;font-weight:700;font-size:15px;letter-spacing:.3px}
+      .badge.mep{background:rgba(46,196,182,.2);border:1px solid rgba(46,196,182,.5)}
+      .badge.ccl{background:rgba(99,102,241,.22);border:1px solid rgba(99,102,241,.55)}
+      
+      /* Comisión pill styles */
+      .comision-pill{
+        display:flex;
+        align-items:center;
+        gap:8px;
+        background:rgba(255,255,255,.08);
+        border:1px solid rgba(255,255,255,.15);
+        border-radius:999px;
+        padding:6px 12px;
+        font-size:12px;
+        font-weight:600;
+        letter-spacing:.3px;
+      }
+      .comision-pill label{
+        color:var(--text-dim);
+        margin:0;
+        white-space:nowrap;
+      }
+      .comision-selector{
+        background:transparent;
+        border:none;
+        color:#ffffff;
+        font-size:12px;
+        font-weight:700;
+        cursor:pointer;
+        outline:none;
+        padding:0;
+        min-width:60px;
+      }
+      .comision-selector:hover{
+        color:var(--accent-2);
+      }
+      .comision-selector option{
+        background:rgba(26,26,26,.95);
+        color:#ffffff;
+        font-weight:500;
+        padding:8px;
+      }
+
+      /* Tables */
+      .table-wrapper{overflow-x:auto; mask-image:linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)}
+      .fx-table{
+        width:100%;border-collapse:separate;border-spacing:0;
+        color:#fff; /* white table text */
+        font-variant-numeric: tabular-nums;
+      }
+      .fx-table th,.fx-table td{
+        padding:14px;border-bottom:1px solid var(--card-border);
+        text-align:center;font-size:18px
+      }
+      .fx-table thead th{font-size:17px;font-weight:800;letter-spacing:.3px; position:sticky; top:0; z-index:1; backdrop-filter:blur(6px) saturate(130%)}
+      .fx-table thead tr.top th{background:rgba(0,0,0,.22);height:44px;vertical-align:middle}
+      .fx-table thead tr.sub th{background:rgba(255,255,255,.04);font-weight:700;height:44px;vertical-align:middle}
+      .fx-table th.left{text-align:center}
+      .ci-selector{
+        background:rgba(255,255,255,.08);
+        border:1px solid rgba(255,255,255,.15);
+        color:#ffffff;
+        font-size:12px;
+        font-weight:600;
+        padding:4px 8px;
+        border-radius:6px;
+        cursor:pointer;
+        outline:none;
+        transition:all 0.2s ease;
+        backdrop-filter:blur(8px);
+      }
+      .ci-selector:hover{
+        background:rgba(255,255,255,.12);
+        border-color:rgba(255,255,255,.25);
+        transform:translateY(-1px);
+      }
+      .ci-selector:focus{
+        background:rgba(255,255,255,.15);
+        border-color:rgba(255,255,255,.4);
+        box-shadow:0 0 0 2px rgba(255,255,255,.1);
+      }
+      .ci-selector option{
+        background:rgba(26,26,26,.95);
+        color:#ffffff;
+        font-weight:500;
+        padding:8px;
+      }
+      .fx-table td.instrument{text-align:center;font-weight:800}
+      .fx-table tbody td:not(.instrument){text-align:center}
+      .fx-table tbody tr:nth-child(even){background:var(--row-alt)}
+      .fx-table tbody tr:hover{background:rgba(255,255,255,.06)}
+      .instrument-link{color:#cbe3ff;text-decoration:none}
+      .instrument-link:hover{text-decoration:underline}
+
+      /* Column highlights (akin to TNA/TEA highlight) */
+      .fx-table td[data-group="mep"]{background:var(--mep-bg)}
+      .fx-table td[data-group="ccl"]{background:var(--ccl-bg)}
+
+      /* Canje compact table */
+      .fx-table.simple thead tr.sub th{background:rgba(0,0,0,.22)}
+      .fx-table.simple td.accent{font-weight:800;font-size:22px}
+      .value-positive{color:#4ade80}
+      .value-negative{color:#f87171}
+
+      /* Footer */
+      .site-footer{color:var(--text-dim);font-size:12px;padding:18px 0 40px}
+
+      /* FX Calculator */
+      .calculator-wrapper{
+        padding:20px;
+      }
+      .calculator-form{
+        max-width:1200px;
+        margin:0 auto;
+      }
+      .form-row{
+        display:flex;
+        gap:12px;
+        margin-bottom:16px;
+        flex-wrap:wrap;
+      }
+      .form-group{
+        flex:1;
+        min-width:150px;
+        display:flex;
+        flex-direction:column;
+        gap:6px;
+      }
+      .form-group label{
+        color:var(--text-dim);
+        font-size:13px;
+        font-weight:600;
+        letter-spacing:.3px;
+        text-transform:uppercase;
+      }
+      .calculator-input,
+      .calculator-select{
+        background:rgba(255,255,255,.08);
+        border:1px solid rgba(255,255,255,.15);
+        border-radius:8px;
+        padding:12px 14px;
+        color:#ffffff;
+        font-size:16px;
+        font-weight:500;
+        outline:none;
+        transition:all 0.2s ease;
+      }
+      .calculator-input:focus,
+      .calculator-select:focus{
+        border-color:rgba(255,255,255,.4);
+        background:rgba(255,255,255,.12);
+        box-shadow:0 0 0 2px rgba(255,255,255,.1);
+      }
+      .calculator-input::placeholder{
+        color:rgba(255,255,255,.4);
+      }
+      .calculator-input.result{
+        background:rgba(46,196,182,.15);
+        border-color:rgba(46,196,182,.4);
+        font-weight:700;
+        color:#4ade80;
+      }
+      .calculator-select option{
+        background:rgba(26,26,26,.95);
+        color:#ffffff;
+        font-weight:500;
+        padding:8px;
+      }
+
+      /* Responsive */
+      @media (max-width:640px){
+        .brand-title{font-size:16px}
+        .card{border-radius:14px}
+        .fx-table th,.fx-table td{padding:12px 10px;font-size:14px}
+      }
+    </style>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <div class="brand">
+          <div class="logo" aria-hidden="true">FX</div>
+          <h1 class="brand-title">FX Screener</h1>
+          <div class="market-status" id="market-status">
+            <span class="status-indicator" id="status-indicator"></span>
+            <span class="status-text" id="status-text">Market</span>
+          </div>
+        </div>
+        <div class="header-right">
+          <div class="status">
+            <span id="last-updated" aria-live="polite">Actualizado —</span>
+          </div>
+          <div class="banca-privada">Banca Privada</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <section class="intro">
+        <h2 class="section-title">Cotizaciones</h2>
+        <p class="section-subtitle">Dólar MEP y CCL en Tiempo Real</p>
+      </section>
+
+      <!-- FX Screener -->
+      <section class="card">
+        <div class="card-header">
+          <h3 class="card-title">FX Screener</h3>
+          <div class="badges">
+            <span class="badge mep">MEP</span>
+            <span class="badge ccl">CCL</span>
+            <div class="comision-pill">
+              <label for="comision-selector">Comisión %</label>
+              <select class="comision-selector" id="comision-selector">
+                <option value="0.00">0.00%</option>
+                <option value="0.50">0.50%</option>
+                <option value="1.00">1.00%</option>
+                <option value="1.50">1.50%</option>
+                <option value="2.00">2.00%</option>
+                <option value="2.50">2.50%</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="table-wrapper">
+          <table class="fx-table">
+            <colgroup>
+              <col class="col-ci" />
+              <col class="col-group-mep" />
+              <col class="col-group-mep" />
+              <col class="col-group-ccl" />
+              <col class="col-group-ccl" />
+            </colgroup>
+            <thead>
+              <tr class="top">
+                <th class="left">
+                  <select class="ci-selector" id="ci-selector">
+                    <option value="ci">CI</option>
+                    <option value="24hs">24hs</option>
+                  </select>
+                </th>
+                <th class="group" colspan="2">MEP</th>
+                <th class="group" colspan="2">CCL</th>
+              </tr>
+              <tr class="sub">
+                <th class="left">Instrumento</th>
+                <th>Compra</th>
+                <th>Venta</th>
+                <th>Compra</th>
+                <th>Venta</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="instrument"><a href="#" class="instrument-link">AL30</a></td>
+                <td data-group="mep" data-field="mep-al30-compra">$ 1.343,8</td>
+                <td data-group="mep" data-field="mep-al30-venta">$ 1.344,3</td>
+                <td data-group="ccl" data-field="ccl-al30-compra">$ 1.345,4</td>
+                <td data-group="ccl" data-field="ccl-al30-venta">$ 1.346,4</td>
+              </tr>
+              <tr>
+                <td class="instrument"><a href="#" class="instrument-link">GD30</a></td>
+                <td data-group="mep" data-field="mep-gd30-compra">$ 1.342,6</td>
+                <td data-group="mep" data-field="mep-gd30-venta">$ 1.344,4</td>
+                <td data-group="ccl" data-field="ccl-gd30-compra">$ 1.344,2</td>
+                <td data-group="ccl" data-field="ccl-gd30-venta">$ 1.346,1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Canje -->
+      <section class="card">
+        <div class="card-header center">
+          <h3 class="card-title center">Canje</h3>
+        </div>
+        <div class="table-wrapper">
+          <table class="fx-table simple">
+            <thead>
+              <tr class="sub">
+                <th>MEP a CCL</th>
+                <th>CCL a MEP</th>
+              </tr>
+            </thead>
+            <tbody>
+                             <tr>
+                 <td class="accent" data-field="canje-mep-ccl">-0,17%</td>
+                 <td class="accent value-positive" data-field="canje-ccl-mep">0,10%</td>
+               </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Spacing between Canje and FX Calculator -->
+      <div style="height: 24px;"></div>
+
+      <!-- FX Calculator -->
+      <section class="card">
+        <div class="card-header center" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 50%, #00bfff 100%); border-radius: 12px 12px 0 0; box-shadow: 0 8px 32px rgba(30, 58, 138, 0.3); position: relative; overflow: hidden;">
+          <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%); pointer-events: none;"></div>
+          <h3 class="card-title center" style="color: #ffffff; font-weight: 700; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(0,0,0,0.3); position: relative; z-index: 1;">
+            <span style="color: #ffffff;">FX</span> Calculator
+          </h3>
+        </div>
+        <div class="calculator-wrapper">
+          <div class="calculator-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="monto">Monto</label>
+                <input type="text" id="monto" class="calculator-input" placeholder="" maxlength="16">
+              </div>
+              <div class="form-group">
+                <label for="accion">Acción</label>
+                <select id="accion" class="calculator-select">
+                  <option value="compra">Compra</option>
+                  <option value="venta">Venta</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="tc-mesa">TC Mesa</label>
+                <input type="number" id="tc-mesa" class="calculator-input" placeholder="0" step="0.01" min="0">
+              </div>
+              <div class="form-group">
+                <label for="comision-calc">Comisión</label>
+                <select id="comision-calc" class="calculator-select">
+                  <option value="0.00">0,00%</option>
+                  <option value="0.50">0,50%</option>
+                  <option value="1.00">1,00%</option>
+                  <option value="1.50">1,50%</option>
+                  <option value="2.00">2,00%</option>
+                  <option value="2.50">2,50%</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="tc-cliente">TC Cliente</label>
+                <input type="text" id="tc-cliente" class="calculator-input result" readonly>
+              </div>
+              <div class="form-group">
+                <label for="total">Total</label>
+                <input type="text" id="total" class="calculator-input result" readonly>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer container">
+              <p>Modelo de prueba -— RJM.</p>
+    </footer>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const updatedEl = document.getElementById('last-updated');
+        const statusIndicator = document.getElementById('status-indicator');
+        const statusText = document.getElementById('status-text');
+
+        function renderUpdatedAt() {
+          const now = new Date();
+          const formatted = now.toLocaleString('es-AR', {
+            year:'numeric', month:'2-digit', day:'2-digit',
+            hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false
+          });
+          if(updatedEl) updatedEl.textContent = `Actualizado — ${formatted}`;
+        }
+        renderUpdatedAt();
+        setInterval(renderUpdatedAt, 60 * 1000);
+
+        // Market status function
+        let previousMarketStatus = null;
+        
+        function updateMarketStatus() {
+          const now = new Date();
+          
+          // Convert to Argentina time (UTC-3)
+          const argentinaTime = new Date(now.getTime() - (3 * 60 * 60 * 1000));
+          
+          const hour = argentinaTime.getUTCHours();
+          const day = argentinaTime.getUTCDay(); // 0 = Sunday, 1 = Monday, etc.
+          
+          // Check if it's a business day (Monday to Friday)
+          const isBusinessDay = day >= 1 && day <= 5;
+          
+          // Check if market is open (10:30 AM to 5:00 PM Argentina time)
+          const isMarketOpen = isBusinessDay && 
+            ((hour === 10 && argentinaTime.getUTCMinutes() >= 30) || 
+             (hour > 10 && hour < 17));
+          
+          const currentStatus = isMarketOpen ? 'open' : 'closed';
+          
+          // Play bell sound if status changed
+          if (previousMarketStatus !== null && previousMarketStatus !== currentStatus) {
+            playBellSound();
+          }
+          
+          previousMarketStatus = currentStatus;
+          
+          if (isMarketOpen) {
+            statusIndicator.className = 'status-indicator';
+            statusText.textContent = 'Market Open';
+            statusText.style.color = '#4ade80';
+          } else {
+            statusIndicator.className = 'status-indicator closed';
+            statusText.textContent = 'Market Closed';
+            statusText.style.color = '#f87171';
+          }
+        }
+        
+        // Bell sound function
+        function playBellSound() {
+          try {
+            // Create audio context
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create oscillator for bell sound
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            // Connect nodes
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            // Set bell sound properties
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime);
+            oscillator.frequency.setValueAtTime(600, audioContext.currentTime + 0.1);
+            oscillator.frequency.setValueAtTime(800, audioContext.currentTime + 0.2);
+            
+            // Set volume envelope
+            gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+            gainNode.gain.linearRampToValueAtTime(0.3, audioContext.currentTime + 0.05);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+            
+            // Play the bell sound
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + 0.5);
+            
+          } catch (error) {
+            console.log('Bell sound could not be played:', error);
+          }
+        }
+        
+        updateMarketStatus();
+        setInterval(updateMarketStatus, 60000); // Check every minute
+
+        // Poll local Excel API and update cells by data-field
+        const API_URL = 'http://127.0.0.1:5001/api/fx';
+
+        async function refreshFromExcel() {
+          try {
+            const url = `${API_URL}?ci_mode=${currentCIMode}`;
+            const res = await fetch(url, { cache: 'no-store' });
+            const data = await res.json();
+            Object.keys(data).forEach(key => {
+              const el = document.querySelector(`[data-field="${key}"]`);
+              if (el && data[key] !== undefined) el.textContent = data[key];
+            });
+            setTimeout(storeOriginalValues, 100);
+          } catch (e) {
+            // Optional: show a subtle offline indicator or console log
+            console.warn('Excel API fetch failed', e);
+          }
+        }
+
+        refreshFromExcel();
+        setInterval(refreshFromExcel, 5000); // every 5s (adjust as needed)
+
+        // CI selector functionality
+        const ciSelector = document.getElementById('ci-selector');
+        let currentCIMode = 'ci';
+        
+        if (ciSelector) {
+          ciSelector.addEventListener('change', function() {
+            const selectedValue = this.value;
+            currentCIMode = selectedValue;
+            console.log('CI selector changed to:', selectedValue);
+            refreshFromExcel();
+            setTimeout(reapplyCurrentComision, 300);
+          });
+        }
+
+        // Comisión selector functionality
+        const comisionSelector = document.getElementById('comision-selector');
+        let originalValues = {};
+        let currentComision = 0.00;
+
+        // Store original values when page loads
+        function storeOriginalValues() {
+          const compraCells = document.querySelectorAll('[data-field*="-compra"]');
+          const ventaCells = document.querySelectorAll('[data-field*="-venta"]');
+          
+          compraCells.forEach(cell => {
+            const field = cell.getAttribute('data-field');
+            const value = cell.textContent.trim();
+            if (!originalValues[field]) {
+              originalValues[field] = value;
+            }
+          });
+          
+          ventaCells.forEach(cell => {
+            const field = cell.getAttribute('data-field');
+            const value = cell.textContent.trim();
+            if (!originalValues[field]) {
+              originalValues[field] = value;
+            }
+          });
+        }
+
+        // Apply commission calculations
+        function applyComision(comisionPercent) {
+          const compraCells = document.querySelectorAll('[data-field*="-compra"]');
+          const ventaCells = document.querySelectorAll('[data-field*="-venta"]');
+          
+          compraCells.forEach(cell => {
+            const field = cell.getAttribute('data-field');
+            const originalValue = originalValues[field];
+            if (originalValue) {
+              // Extract numeric value from "$ 1.343,8" format
+              const numericValue = parseFloat(originalValue.replace(/[^\d,]/g, '').replace(',', '.'));
+              if (!isNaN(numericValue)) {
+                // Divide by (1 + percentage) for compra
+                const adjustedValue = numericValue / (1 + comisionPercent / 100);
+                cell.textContent = `$ ${adjustedValue.toFixed(1).replace('.', ',')}`;
+              }
+            }
+          });
+          
+          ventaCells.forEach(cell => {
+            const field = cell.getAttribute('data-field');
+            const originalValue = originalValues[field];
+            if (originalValue) {
+              // Extract numeric value from "$ 1.343,8" format
+              const numericValue = parseFloat(originalValue.replace(/[^\d,]/g, '').replace(',', '.'));
+              if (!isNaN(numericValue)) {
+                // Multiply by (1 + percentage) for venta
+                const adjustedValue = numericValue * (1 + comisionPercent / 100);
+                cell.textContent = `$ ${adjustedValue.toFixed(1).replace('.', ',')}`;
+              }
+            }
+          });
+        }
+
+        // Reset to original values
+        function resetToOriginal() {
+          Object.keys(originalValues).forEach(field => {
+            const cell = document.querySelector(`[data-field="${field}"]`);
+            if (cell) {
+              cell.textContent = originalValues[field];
+            }
+          });
+        }
+
+        if (comisionSelector) {
+          // Store original values after initial data load
+          setTimeout(storeOriginalValues, 1000);
+          
+          comisionSelector.addEventListener('change', function() {
+            const selectedComision = parseFloat(this.value);
+            
+            // Reset to original values first
+            resetToOriginal();
+            
+            // Apply new commission if not 0%
+            if (selectedComision > 0) {
+              applyComision(selectedComision);
+            }
+            
+            currentComision = selectedComision;
+            console.log('Comisión changed to:', selectedComision + '%');
+          });
+        }
+
+        // FX Calculator functionality
+        const montoInput = document.getElementById('monto');
+        const accionSelect = document.getElementById('accion');
+        const tcMesaInput = document.getElementById('tc-mesa');
+        const comisionCalcSelect = document.getElementById('comision-calc');
+        const tcClienteInput = document.getElementById('tc-cliente');
+        const totalInput = document.getElementById('total');
+
+        function formatNumber(num) {
+          return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function parseFormattedNumber(str) {
+          return parseFloat(str.replace(/\./g, '')) || 0;
+        }
+
+        function calculateFX() {
+          const monto = parseFormattedNumber(montoInput.value);
+          const accion = accionSelect.value;
+          const tcMesa = parseFloat(tcMesaInput.value) || 0;
+          const comision = parseFloat(comisionCalcSelect.value) || 0;
+
+          if (tcMesa > 0) {
+            let tcCliente;
+            
+            if (accion === 'compra') {
+              // Compra = TC Mesa * (1 + Comisión)
+              tcCliente = tcMesa * (1 + comision / 100);
+            } else {
+              // Venta = TC Mesa / (1 + Comisión)
+              tcCliente = tcMesa / (1 + comision / 100);
+            }
+
+            // Format TC Cliente with 2 decimal places
+            tcClienteInput.value = tcCliente.toFixed(2).replace('.', ',');
+            
+            // Calculate Total based on Acción
+            if (monto > 0) {
+              let total;
+              
+              if (accion === 'compra') {
+                // Compra: Total = Monto / (1 + TC Cliente)
+                total = monto / (1 + tcCliente);
+              } else {
+                // Venta: Total = Monto * (1 + TC Cliente)
+                total = monto * (1 + tcCliente);
+              }
+              
+              // Format Total with dots as thousand separators and comma as decimal
+              const totalFormatted = formatNumber(Math.floor(total)) + ',' + (total % 1).toFixed(2).substring(2);
+              totalInput.value = totalFormatted;
+            } else {
+              totalInput.value = '';
+            }
+          } else {
+            tcClienteInput.value = '';
+            totalInput.value = '';
+          }
+        }
+
+        // Format monto input as user types
+        if (montoInput) {
+          montoInput.addEventListener('input', function() {
+            const value = this.value.replace(/\./g, '');
+            const numValue = parseFloat(value) || 0;
+            if (numValue > 0) {
+              this.value = formatNumber(numValue);
+            }
+          });
+        }
+
+        // Add event listeners for real-time calculation
+        if (montoInput) montoInput.addEventListener('input', calculateFX);
+        if (accionSelect) accionSelect.addEventListener('change', calculateFX);
+        if (tcMesaInput) tcMesaInput.addEventListener('input', calculateFX);
+        if (comisionCalcSelect) comisionCalcSelect.addEventListener('change', calculateFX);
+
+        // Reapply current commission after data refresh
+        function reapplyCurrentComision() {
+          if (currentComision > 0) {
+            applyComision(currentComision);
+          }
+        }
+      });
+    </script>
+  </body>
+</html>
