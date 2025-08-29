@@ -64,8 +64,8 @@ try:
     with open('FX.html', 'r', encoding='utf-8') as f:
         html_content = f.read()
     
-    # Display the HTML content with full viewport and scrolling enabled
-    components.html(html_content, height=1500, scrolling=True)
+    # Display the HTML content with full viewport
+    components.html(html_content, height=1000, scrolling=False)
     
 except FileNotFoundError:
     st.error("FX.html file not found. Please make sure the HTML file is in the same directory as this app.")
