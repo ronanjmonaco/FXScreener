@@ -13,6 +13,7 @@
 
     <style>
       :root{
+        /* Dark Mode (Default) */
         --bg-start:#071a2b; --bg-mid:#0e3560; --bg-end:#2d6cdf;
         --text:#ffffff; --text-dim:rgba(255,255,255,.72);
         --card-bg:rgba(255,255,255,.06); --card-border:rgba(255,255,255,.18);
@@ -21,6 +22,18 @@
         --row-alt:rgba(255,255,255,.03);
         --accent-1:#1e5ad7; --accent-2:#27c3ff;
         --decor: rgba(255,255,255,.12);
+      }
+
+      /* Light Mode Variables */
+      [data-theme="light"] {
+        --bg-start:#f8fafc; --bg-mid:#e2e8f0; --bg-end:#cbd5e1;
+        --text:#1e293b; --text-dim:rgba(30,41,59,.72);
+        --card-bg:rgba(255,255,255,.8); --card-border:rgba(0,0,0,.1);
+        --header-bg:rgba(255,255,255,.9);
+        --mep-bg:rgba(46,196,182,.08); --ccl-bg:rgba(99,102,241,.08);
+        --row-alt:rgba(0,0,0,.02);
+        --accent-1:#3b82f6; --accent-2:#0ea5e9;
+        --decor: rgba(0,0,0,.06);
       }
       *{box-sizing:border-box}
       html,body{height:100%}
@@ -32,6 +45,15 @@
           radial-gradient(1200px 600px at 15% 10%, rgba(255,255,255,.06), transparent 60%),
           radial-gradient(1000px 500px at 85% 0%, rgba(46,196,182,.12), transparent 55%),
           linear-gradient(160deg,var(--bg-start) 0%,var(--bg-mid) 52%,var(--bg-end) 100%);
+        transition: all 0.3s ease;
+      }
+
+      /* Light mode background adjustments */
+      [data-theme="light"] body {
+        background:
+          radial-gradient(1200px 600px at 15% 10%, rgba(59,130,246,.04), transparent 60%),
+          radial-gradient(1000px 500px at 85% 0%, rgba(14,165,233,.06), transparent 55%),
+          linear-gradient(160deg,var(--bg-start) 0%,var(--bg-mid) 52%,var(--bg-end) 100%);
       }
       /* Allaria-inspired diagonal corner decorations */
       body::before, body::after{
@@ -41,6 +63,13 @@
           linear-gradient(135deg, transparent 0 72%, rgba(0,0,0,.22) 72% 100%),
           repeating-linear-gradient(135deg, var(--decor) 0 10px, transparent 10px 24px);
         filter: drop-shadow(0 12px 24px rgba(0,0,0,.4));
+        transition: all 0.3s ease;
+      }
+
+      [data-theme="light"] body::before, 
+      [data-theme="light"] body::after {
+        opacity:.15;
+        filter: drop-shadow(0 12px 24px rgba(0,0,0,.1));
       }
       body::before{ left:-40px; bottom:-40px; transform:rotate(0.0001deg); }
       body::after{ right:-40px; top:-40px; transform:rotate(180deg); }
@@ -59,6 +88,8 @@
         backdrop-filter:saturate(140%) blur(8px);
         background:var(--header-bg);
         border-bottom:1px solid var(--card-border);
+        transition: all 0.3s ease;
+        position: relative;
       }
       .site-header .container{
         display:flex;align-items:center;justify-content:space-between;height:64px;
@@ -76,10 +107,10 @@
         background:linear-gradient(135deg,var(--accent-1),var(--accent-2));
         color:#001020;font-weight:800;font-size:12px;letter-spacing:.5px
       }
-      .brand-title{margin:0;font-size:16px;font-weight:800}
+      .brand-title{margin:0;font-size:16px;font-weight:800; color:var(--text);}
       .status{color:var(--text-dim);font-size:11px}
       .banca-privada{
-        color:#ffffff;
+        color:var(--text);
         font-size:10px;
         font-weight:700;
         background:rgba(255,255,255,.1);
@@ -87,6 +118,53 @@
         padding:4px 8px;
         border-radius:999px;
         letter-spacing:.3px;
+        transition: all 0.3s ease;
+      }
+
+      [data-theme="light"] .banca-privada {
+        background:rgba(0,0,0,.06);
+        border:1px solid rgba(0,0,0,.1);
+        color:var(--text);
+      }
+
+      /* Theme Toggle Button */
+      .theme-toggle {
+        background: transparent;
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 6px;
+        padding: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: var(--text);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 20;
+      }
+
+      [data-theme="light"] .theme-toggle {
+        border: 1px solid rgba(0,0,0,.1);
+        background: rgba(0,0,0,.02);
+      }
+
+      .theme-toggle:hover {
+        background: rgba(255,255,255,.1);
+        transform: scale(1.05);
+      }
+
+      [data-theme="light"] .theme-toggle:hover {
+        background: rgba(0,0,0,.06);
+      }
+
+      .theme-icon {
+        transition: all 0.3s ease;
       }
       
       /* Mobile Header Adjustments */
@@ -116,6 +194,13 @@
         .banca-privada {
           font-size: 9px;
           padding: 3px 6px;
+        }
+        .theme-toggle {
+          width: 24px;
+          height: 24px;
+          font-size: 12px;
+          right: 12px;
+          padding: 4px;
         }
       }
       
@@ -191,6 +276,11 @@
         font-weight:600;
         letter-spacing:.3px;
       }
+
+      [data-theme="light"] .comision-pill {
+        background:rgba(0,0,0,.04);
+        border:1px solid rgba(0,0,0,.2);
+      }
       .comision-pill label{
         color:var(--text-dim);
         margin:0;
@@ -199,13 +289,17 @@
       .comision-selector{
         background:transparent;
         border:none;
-        color:#ffffff;
+        color:var(--text);
         font-size:12px;
         font-weight:700;
         cursor:pointer;
         outline:none;
         padding:0;
         min-width:60px;
+      }
+
+      [data-theme="light"] .comision-selector {
+        color:var(--text);
       }
       .comision-selector:hover{
         color:var(--accent-2);
@@ -217,12 +311,18 @@
         padding:8px;
       }
 
+      [data-theme="light"] .comision-selector option {
+        background:rgba(255,255,255,.95);
+        color:var(--text);
+      }
+
       /* Tables */
       .table-wrapper{overflow-x:auto; mask-image:linear-gradient(to right, transparent 0, black 24px, black calc(100% - 24px), transparent 100%)}
       .fx-table{
         width:100%;border-collapse:separate;border-spacing:0;
-        color:#fff; /* white table text */
+        color:var(--text); /* white table text */
         font-variant-numeric: tabular-nums;
+        transition: all 0.3s ease;
       }
       .fx-table th,.fx-table td{
         padding:14px;border-bottom:1px solid var(--card-border);
@@ -231,11 +331,14 @@
       .fx-table thead th{font-size:17px;font-weight:800;letter-spacing:.3px; position:sticky; top:0; z-index:1; backdrop-filter:blur(6px) saturate(130%)}
       .fx-table thead tr.top th{background:rgba(0,0,0,.22);height:44px;vertical-align:middle}
       .fx-table thead tr.sub th{background:rgba(255,255,255,.04);font-weight:700;height:44px;vertical-align:middle}
+
+      [data-theme="light"] .fx-table thead tr.top th{background:rgba(0,0,0,.04)}
+      [data-theme="light"] .fx-table thead tr.sub th{background:rgba(0,0,0,.02)}
       .fx-table th.left{text-align:center}
       .ci-selector{
         background:rgba(255,255,255,.08);
         border:1px solid rgba(255,255,255,.15);
-        color:#ffffff;
+        color:var(--text);
         font-size:12px;
         font-weight:600;
         padding:4px 8px;
@@ -245,15 +348,32 @@
         transition:all 0.2s ease;
         backdrop-filter:blur(8px);
       }
+
+      [data-theme="light"] .ci-selector {
+        background:rgba(0,0,0,.04);
+        border:1px solid rgba(0,0,0,.1);
+        color:var(--text);
+      }
       .ci-selector:hover{
         background:rgba(255,255,255,.12);
         border-color:rgba(255,255,255,.25);
         transform:translateY(-1px);
       }
+
+      [data-theme="light"] .ci-selector:hover {
+        background:rgba(0,0,0,.08);
+        border-color:rgba(0,0,0,.15);
+      }
       .ci-selector:focus{
         background:rgba(255,255,255,.15);
         border-color:rgba(255,255,255,.4);
         box-shadow:0 0 0 2px rgba(255,255,255,.1);
+      }
+
+      [data-theme="light"] .ci-selector:focus {
+        background:rgba(0,0,0,.1);
+        border-color:rgba(0,0,0,.2);
+        box-shadow:0 0 0 2px rgba(0,0,0,.05);
       }
       .ci-selector option{
         background:rgba(26,26,26,.95);
@@ -261,12 +381,22 @@
         font-weight:500;
         padding:8px;
       }
+
+      [data-theme="light"] .ci-selector option {
+        background:rgba(255,255,255,.95);
+        color:var(--text);
+      }
       .fx-table td.instrument{text-align:center;font-weight:800}
       .fx-table tbody td:not(.instrument){text-align:center}
       .fx-table tbody tr:nth-child(even){background:var(--row-alt)}
       .fx-table tbody tr:hover{background:rgba(255,255,255,.06)}
+
+      [data-theme="light"] .fx-table tbody tr:hover{background:rgba(0,0,0,.03)}
+
       .instrument-link{color:#cbe3ff;text-decoration:none}
       .instrument-link:hover{text-decoration:underline}
+
+      [data-theme="light"] .instrument-link{color:var(--accent-1)}
 
       /* Column highlights (akin to TNA/TEA highlight) */
       .fx-table td[data-group="mep"]{background:var(--mep-bg)}
@@ -277,6 +407,8 @@
       .fx-table.simple td.accent{font-weight:800;font-size:22px}
       .value-positive{color:#4ade80}
       .value-negative{color:#f87171}
+
+      [data-theme="light"] .fx-table.simple thead tr.sub th{background:rgba(0,0,0,.04)}
 
       /* Footer */
       .site-footer{color:var(--text-dim);font-size:12px;padding:18px 0 40px}
@@ -315,11 +447,18 @@
         border:1px solid rgba(255,255,255,.15);
         border-radius:8px;
         padding:12px 14px;
-        color:#ffffff;
+        color:var(--text);
         font-size:16px;
         font-weight:500;
         outline:none;
         transition:all 0.2s ease;
+      }
+
+      [data-theme="light"] .calculator-input,
+      [data-theme="light"] .calculator-select {
+        background:rgba(255,255,255,.9);
+        border:1px solid rgba(0,0,0,.2);
+        color:var(--text);
       }
       .calculator-input:focus,
       .calculator-select:focus{
@@ -327,8 +466,19 @@
         background:rgba(255,255,255,.12);
         box-shadow:0 0 0 2px rgba(255,255,255,.1);
       }
+
+      [data-theme="light"] .calculator-input:focus,
+      [data-theme="light"] .calculator-select:focus {
+        border-color:var(--accent-1);
+        background:rgba(255,255,255,1);
+        box-shadow:0 0 0 2px rgba(59,130,246,.2);
+      }
       .calculator-input::placeholder{
         color:rgba(255,255,255,.4);
+      }
+
+      [data-theme="light"] .calculator-input::placeholder {
+        color:rgba(0,0,0,.4);
       }
       .calculator-input.result{
         background:rgba(46,196,182,.15);
@@ -336,11 +486,22 @@
         font-weight:700;
         color:#4ade80;
       }
+
+      [data-theme="light"] .calculator-input.result {
+        background:rgba(46,196,182,.1);
+        border-color:rgba(46,196,182,.3);
+        color:#059669;
+      }
       .calculator-select option{
         background:rgba(26,26,26,.95);
         color:#ffffff;
         font-weight:500;
         padding:8px;
+      }
+
+      [data-theme="light"] .calculator-select option {
+        background:rgba(255,255,255,.95);
+        color:var(--text);
       }
 
       /* Responsive */
@@ -487,6 +648,19 @@
           </div>
           <div class="banca-privada">Banca Privada</div>
         </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+        </button>
       </div>
     </header>
 
@@ -977,6 +1151,52 @@
         function reapplyCurrentComision() {
           if (currentComision > 0) {
             applyComision(currentComision);
+          }
+        }
+
+        // Theme Toggle Functionality
+        const themeToggle = document.getElementById('themeToggle');
+        const body = document.body;
+        
+        // Check for saved theme preference or default to dark
+        const savedTheme = localStorage.getItem('theme') || 'dark';
+        body.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
+        
+        // Theme toggle click handler
+        themeToggle.addEventListener('click', () => {
+          const currentTheme = body.getAttribute('data-theme');
+          const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+          
+          body.setAttribute('data-theme', newTheme);
+          localStorage.setItem('theme', newTheme);
+          updateThemeIcon(newTheme);
+        });
+        
+        // Update theme icon
+        function updateThemeIcon(theme) {
+          if (theme === 'light') {
+            // Show sun icon
+            themeToggle.innerHTML = `
+              <svg class="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+              </svg>
+            `;
+          } else {
+            // Show moon icon
+            themeToggle.innerHTML = `
+              <svg class="theme-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+              </svg>
+            `;
           }
         }
       });
