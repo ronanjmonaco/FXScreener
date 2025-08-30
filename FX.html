@@ -613,8 +613,8 @@
         updateMarketStatus();
         setInterval(updateMarketStatus, 60000); // Check every minute
 
-        // Poll local Excel API and update cells by data-field
-        const API_URL = 'http://127.0.0.1:5001/api/fx';
+        // Poll public Excel API and update cells by data-field
+        const API_URL = 'https://hall-biodiversity-equally-versus.trycloudflare.com/api/fx';
 
         async function refreshFromExcel() {
           try {
