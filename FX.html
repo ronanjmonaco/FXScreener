@@ -643,9 +643,9 @@
           </div>
         </div>
         <div class="header-right">
-          <div class="status">
-            <span id="last-updated" aria-live="polite">Actualizado —</span>
-          </div>
+        <div class="status">
+          <span id="last-updated" aria-live="polite">Actualizado —</span>
+        </div>
           <div class="banca-privada">Banca Privada</div>
         </div>
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
@@ -752,10 +752,10 @@
               </tr>
             </thead>
             <tbody>
-                             <tr>
-                 <td class="accent" data-field="canje-mep-ccl">-0,17%</td>
+              <tr>
+                <td class="accent" data-field="canje-mep-ccl">-0,17%</td>
                  <td class="accent value-positive" data-field="canje-ccl-mep">0,10%</td>
-               </tr>
+              </tr>
             </tbody>
           </table>
         </div>
@@ -944,7 +944,7 @@
         setInterval(updateMarketStatus, 60000); // Check every minute
 
         // Poll public Excel API and update cells by data-field
-        const API_URL = 'https://needle-recommended-stability-july.trycloudflare.com/api/fx';
+        const API_URL = 'https://argyfx.com/api/fx';
 
         async function refreshFromExcel() {
           try {
