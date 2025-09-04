@@ -5,3 +5,4 @@ ingress:
   - hostname: argyfx.com
     service: http://127.0.0.1:5001
   - service: http_status:404
+
