@@ -1,8 +1,16 @@
 tunnel: argyfx-tunnel
 credentials-file: C:\Users\rmonaco\.cloudflared\9e0bf499-7221-46d5-a9b6-57c412d4e239.json
+origincert: C:\Users\rmonaco\.cloudflared\cert.pem
 
 ingress:
   - hostname: argyfx.com
     service: http://127.0.0.1:5001
+    originRequest:
+      noTLSVerify: true
+      connectTimeout: 30s
+      keepAliveConnections: 100
+      keepAliveTimeout: 90s
   - service: http_status:404
+
+
 
