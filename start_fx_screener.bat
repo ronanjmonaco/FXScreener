@@ -12,7 +12,7 @@ echo Waiting 3 seconds...
 timeout /t 3 >nul
 
 echo Starting Cloudflare tunnel...
-start "Cloudflare Tunnel" cmd /k ".\cloudflared.exe tunnel run --config tunnel-config.yml argyfx-tunnel"
+start "Cloudflare Tunnel" cmd /k ".\cloudflared.exe tunnel run argyfx-tunnel --config tunnel-config.yml"
 
 echo.
 echo ========================================
@@ -28,3 +28,6 @@ echo Your API URL: https://argyfx.com
 echo.
 echo Press any key to continue...
 pause >nul
+
+
+
