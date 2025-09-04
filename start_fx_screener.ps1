@@ -12,7 +12,7 @@ Start-Sleep -Seconds 3
 
 # Start Cloudflare tunnel with CORRECT syntax
 Write-Host "Starting Cloudflare tunnel..." -ForegroundColor Yellow
-Start-Process cmd -ArgumentList "/k", ".\cloudflared.exe tunnel run --config tunnel-config.yml argyfx-tunnel" -WindowStyle Normal
+Start-Process cmd -ArgumentList "/k", ".\cloudflared.exe tunnel run argyfx-tunnel --config tunnel-config.yml" -WindowStyle Normal
 
 Write-Host ""
 Write-Host "========================================" -ForegroundColor Green
