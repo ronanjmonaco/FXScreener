@@ -944,13 +944,24 @@
         setInterval(updateMarketStatus, 60000); // Check every minute
 
         // Poll public Excel API and update cells by data-field
-        const API_URL = 'https://argyfx.com/api/fx';
+        const API_URL = 'https://87454aafadc7.ngrok-free.app/api/fx';
+        
+        // Debug: Log the API URL being used
+        console.log('Using API URL:', API_URL);
 
         async function refreshFromExcel() {
           try {
             const url = `${API_URL}?ci_mode=${currentCIMode}`;
-            const res = await fetch(url, { cache: 'no-store' });
+            console.log('Fetching data from:', url);
+            const res = await fetch(url, { 
+              cache: 'no-store',
+              headers: {
+                'ngrok-skip-browser-warning': 'true'
+              }
+            });
+            console.log('API Response status:', res.status);
             const data = await res.json();
+            console.log('API Data received:', data);
             Object.keys(data).forEach(key => {
               const el = document.querySelector(`[data-field="${key}"]`);
               if (el && data[key] !== undefined) el.textContent = data[key];
