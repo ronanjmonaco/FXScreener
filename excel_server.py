@@ -11,7 +11,13 @@ CORS(app, origins=[
     "https://fx-screener-mep-ccl.streamlit.app",
     "https://argyfx.com",
     "http://127.0.0.1:5001",
-    "http://localhost:5001"
+    "http://localhost:5001",
+    "https://7e5b9ce0d501.ngrok-free.app",
+    "https://87454aafadc7.ngrok-free.app",
+    "https://131e1e31c631.ngrok-free.app",
+    "https://39897990105f.ngrok-free.app",
+    "https://097414a9d209.ngrok-free.app",
+    "https://5ac86ee89b6f.ngrok-free.app"
 ], supports_credentials=True)
 
 # Load config
