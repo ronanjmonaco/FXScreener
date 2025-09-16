@@ -53,10 +53,10 @@ function Restart-Service {
 }
 
 $services = @(
-    @{ Name = "Excel API"; Url = "http://127.0.0.1:5001/api/fx"; Port = 5001; Command = ".venv\Scripts\python.exe excel_server.py" },
+    @{ Name = "Excel API"; Url = "http://127.0.0.1:5001/health"; Port = 5001; Command = ".venv\Scripts\python.exe excel_server.py" },
     @{ Name = "Streamlit"; Url = "http://127.0.0.1:8501"; Port = 8501; Command = ".venv\Scripts\streamlit.exe run app.py --server.port 8501 --server.headless true" },
-    @{ Name = "External API"; Url = "https://argyfx.com/api/fx"; Port = 0; Command = ".\cloudflared.exe tunnel run argyfx-tunnel --config tunnel-config.yml" },
-    @{ Name = "External Site"; Url = "https://argyfx.com"; Port = 0; Command = ".\cloudflared.exe tunnel run argyfx-tunnel --config tunnel-config.yml" }
+    @{ Name = "Ngrok Tunnels"; Url = "http://127.0.0.1:4040/api/tunnels"; Port = 4040; Command = "ngrok start --all --config=ngrok.yml" },
+    @{ Name = "Cloudflare (Alt)"; Url = "https://argyfx.com/api/fx"; Port = 0; Command = ".\cloudflared.exe tunnel run argyfx-tunnel --config tunnel-config.yml" }
 )
 
 while ($true) {
@@ -89,3 +89,8 @@ while ($true) {
     Write-Host ""
     Start-Sleep -Seconds $CheckInterval
 }
+
+
+
+
+
